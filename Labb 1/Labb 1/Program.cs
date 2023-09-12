@@ -14,25 +14,54 @@
 //Exempel output för input ”29535123p48723487597645723645”:
 //Total = 5836428677242
 
+
+using System.Data.SqlTypes;
+
 Console.Write("Skriv in en sträng: ");
-string bigNumber = Console.ReadLine();
-int subStringinNumbers = 0;
-int index = -1;
+string inputNumber = Console.ReadLine();
 
-string[] listofBigNumber = new string[bigNumber.Length];
+string subString = "";
+string beforeSubString = "";
+string endSubString = "";
 
-for (int i = 0; i < bigNumber.Length; i++)
+long summaryOfAllSubStrings = 0;
+
+for (int i = 0; i < inputNumber.Length; i++)
 {
-    char c = bigNumber[i];
-    if (char.IsDigit(c))
+    
+
+    for (int j = i + 1; j < inputNumber.Length; j++)
     {
-        subStringinNumbers += c;
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.Write(subStringinNumbers);
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.Write(bigNumber);
-        Console.WriteLine();
+        if (!char.IsDigit(inputNumber[j])) //kollar om det inte är ett tal i så fall avbryts loopen.
+        {
+            break;
+        }
+
+        if (inputNumber[i] == inputNumber[j])
+        { 
+            subString = inputNumber.Substring(i, j - i + 1);//Går igenom alla index och sparar undan dem som stämmer och lagrar dem hittade talen i en substräng.
+
+            long result;
+            long.TryParse(subString, out result);
+            summaryOfAllSubStrings += result;
+
+            beforeSubString = inputNumber.Substring(0, inputNumber.IndexOf(subString));
+            endSubString = inputNumber.Substring(subString.Length + beforeSubString.Length, (inputNumber.Length) - (subString.Length + beforeSubString.Length));
+
+            Console.Write(beforeSubString);
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write(subString);
+            Console.ResetColor();
+            Console.WriteLine(endSubString);
+            break;
+
+        }
     }
-        
 }
-  
+Console.WriteLine();
+Console.ForegroundColor = ConsoleColor.DarkYellow;
+Console.Write("Totala summan: ");
+Console.ForegroundColor = ConsoleColor.Red;
+Console.Write(summaryOfAllSubStrings);
+Console.ResetColor();
+
