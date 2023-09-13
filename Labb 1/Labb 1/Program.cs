@@ -15,7 +15,7 @@
 //Total = 5836428677242
 
 
-using System.Data.SqlTypes;
+
 
 Console.Write("Skriv in en sträng: ");
 string inputNumber = Console.ReadLine();
@@ -26,36 +26,41 @@ string endSubString = "";
 
 long summaryOfAllSubStrings = 0;
 
-for (int i = 0; i < inputNumber.Length; i++)
+//Yttre loopen räknar första talet och körs till näst sista talet.
+for (int i = 0; i < inputNumber.Length - 1; i++)
 {
-    
-
-    for (int j = i + 1; j < inputNumber.Length; j++)
+    if (inputNumber[i] != inputNumber[i + 1]) //kollar ifall andra talet är samma som det första i så fall fortsätter yttre loopen.
     {
-        if (!char.IsDigit(inputNumber[j])) //kollar om det inte är ett tal i så fall avbryts loopen.
+        for (int j = i + 1; j < inputNumber.Length; j++) //Innre loopen som kollar talen efter det första
         {
-            break;
+            if (!char.IsDigit(inputNumber[j])) //Kollar om andra talet inte är ett tal i så fall avbryts inre loopen och första loopen går vidare till nästa tal och gör samma sak.
+            {
+                break;
+            }
+
+            if (inputNumber[i] == inputNumber[j]) //När det andra talet är samma som det första så tas första delsträngen ut
+            {
+                subString = inputNumber.Substring(i, j - i + 1);//Går igenom alla index och sparar undan dem som stämmer och lagrar dem hittade talen i en substräng.
+
+                long result;
+                long.TryParse(subString, out result);
+                summaryOfAllSubStrings += result;
+
+                beforeSubString = inputNumber.Substring(0, inputNumber.IndexOf(subString));
+                endSubString = inputNumber.Substring(subString.Length + beforeSubString.Length, (inputNumber.Length) - (subString.Length + beforeSubString.Length));
+
+                Console.Write(beforeSubString);
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Write(subString);
+                Console.ResetColor();
+                Console.WriteLine(endSubString);
+                break;
+
+            }
+
         }
 
-        if (inputNumber[i] == inputNumber[j])
-        { 
-            subString = inputNumber.Substring(i, j - i + 1);//Går igenom alla index och sparar undan dem som stämmer och lagrar dem hittade talen i en substräng.
-
-            long result;
-            long.TryParse(subString, out result);
-            summaryOfAllSubStrings += result;
-
-            beforeSubString = inputNumber.Substring(0, inputNumber.IndexOf(subString));
-            endSubString = inputNumber.Substring(subString.Length + beforeSubString.Length, (inputNumber.Length) - (subString.Length + beforeSubString.Length));
-
-            Console.Write(beforeSubString);
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write(subString);
-            Console.ResetColor();
-            Console.WriteLine(endSubString);
-            break;
-
-        }
+    
     }
 }
 Console.WriteLine();
