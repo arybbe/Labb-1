@@ -16,25 +16,26 @@
 
 
 
-
+//Frågar användaren efter en sträng och tar sedan emot en på samma rad.
 Console.Write("Skriv in en sträng: ");
 string inputNumber = Console.ReadLine();
 
+//Här deklareras de olika variabler som skall användas inuti looparna.
 string subString = "";
 string beforeSubString = "";
-string endSubString = "";
+string afterSubString = "";
 
 long summaryOfAllSubStrings = 0;
 
-//Yttre loopen räknar första talet och körs till näst sista talet.
+//Yttre loopen räknar första talet och körs tills näst sista talet.
 for (int i = 0; i < inputNumber.Length - 1; i++)
 {
-    if (inputNumber[i] != inputNumber[i + 1]) //kollar ifall andra talet är samma som det första i så fall fortsätter yttre loopen.
+    if (inputNumber[i] != inputNumber[i + 1]) //kollar ifall andra talet i rad är samma som det första i så fall fortsätter yttre loopen.
     {
         for (int j = i + 1; j < inputNumber.Length; j++) //Innre loopen som kollar talen efter det första
         {
-            if (!char.IsDigit(inputNumber[j])) //Kollar om andra talet inte är ett tal i så fall avbryts inre loopen och första loopen går vidare till nästa tal och gör samma sak.
-            {
+            if (!char.IsDigit(inputNumber[j])) //Kollar om andra talet inte är ett tal i så fall avbryts inre loopen och
+            {                                  // första loopen går vidare till nästa tal och gör samma sak.
                 break;
             }
 
@@ -43,17 +44,18 @@ for (int i = 0; i < inputNumber.Length - 1; i++)
                 subString = inputNumber.Substring(i, j - i + 1);//Går igenom alla index och sparar undan dem som stämmer och lagrar dem hittade talen i en substräng.
 
                 long result;
-                long.TryParse(subString, out result);
+                long.TryParse(subString, out result); //Parsar varje delsträng och tar ut det som ett resultat för att sedan lägga till på den befinntliga summan.
                 summaryOfAllSubStrings += result;
 
-                beforeSubString = inputNumber.Substring(0, inputNumber.IndexOf(subString));
-                endSubString = inputNumber.Substring(subString.Length + beforeSubString.Length, (inputNumber.Length) - (subString.Length + beforeSubString.Length));
+                beforeSubString = inputNumber.Substring(0, inputNumber.IndexOf(subString)); // Andra substringen som tar alla tecken före delsträngen
+                afterSubString = inputNumber.Substring(subString.Length + beforeSubString.Length, (inputNumber.Length) - (subString.Length + beforeSubString.Length)); //Tredje delsträngen som tar alla tecken efter delsträngen.
 
+                //Här skrivs alla delsträngar ut i ordning där "subString" skrivs ut markerad för att skilja åt.
                 Console.Write(beforeSubString);
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.Write(subString);
                 Console.ResetColor();
-                Console.WriteLine(endSubString);
+                Console.WriteLine(afterSubString);
                 break;
 
             }
@@ -63,6 +65,7 @@ for (int i = 0; i < inputNumber.Length - 1; i++)
     
     }
 }
+//Till sist skrivs totala summan ut från alla delsträngar som har plussats ihop.
 Console.WriteLine();
 Console.ForegroundColor = ConsoleColor.DarkYellow;
 Console.Write("Totala summan: ");
